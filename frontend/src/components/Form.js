@@ -25,8 +25,13 @@ const handleChange = (event) => {
 }
 
 const handlePredictClick = () => {
-    const url = "http://127.0.0.1:5001/predict/";
+    const url = "http://localhost:5001/predict";
     setIsloading(true);
+
+    console.log(formData);
+    const jsonData = JSON.stringify(formData);
+
+    console.log(jsonData);
     fetch(url,
     {
         headers: {
@@ -34,13 +39,15 @@ const handlePredictClick = () => {
         'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify(formData)
+        body: jsonData
     })  
     .then(response => response.json())
     .then(response => {
-        setResult(response.result);
+        console.log(response.Prediction);
+        setResult(response.Prediction);
         setIsloading(false);
     });
+    
 }
 
 // const handleCancelClick = (event) => {
@@ -192,10 +199,15 @@ const handlePredictClick = () => {
           </form>
           <br />
           <div className="text-center">
-            <h4>
-              <span id="prediction">{result}</span>
-            </h4>
-          </div>
+  {Array.isArray(result) ? (
+    <h4>
+      <span id="prediction">{result}</span>
+    </h4>
+  ) : (
+    <p>Error: {result.error}</p>
+  )}
+</div>
+
         </div>
       </div>
     </>
