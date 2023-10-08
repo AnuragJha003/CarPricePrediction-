@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 const Form = (props) => {
-    // let {mode} = props;
   const [isLoading, setIsloading] = useState(false);
   const [formData, setFormData] = useState({
     Year:'', 
@@ -21,17 +20,12 @@ const handleChange = (event) => {
     let inputData = {...formData};
     inputData[name]=value;
     setFormData(inputData);
-    // console.log(inputData)
 }
 
 const handlePredictClick = () => {
     const url = "http://localhost:5001/predict";
     setIsloading(true);
-
-    console.log(formData);
     const jsonData = JSON.stringify(formData);
-
-    console.log(jsonData);
     fetch(url,
     {
         headers: {
@@ -43,16 +37,10 @@ const handlePredictClick = () => {
     })  
     .then(response => response.json())
     .then(response => {
-        console.log(response.Prediction);
         setResult(response.Prediction);
         setIsloading(false);
     });
-    
 }
-
-// const handleCancelClick = (event) => {
-//     setResult("");
-// }
 
   return (
     <>
@@ -199,15 +187,10 @@ const handlePredictClick = () => {
           </form>
           <br />
           <div className="text-center">
-  {Array.isArray(result) ? (
-    <h4>
-      <span id="prediction">{result}</span>
-    </h4>
-  ) : (
-    <p>Error: {result.error}</p>
-  )}
-</div>
-
+            <h4>
+              <span id="prediction">{result}</span>
+            </h4>
+          </div>
         </div>
       </div>
     </>
